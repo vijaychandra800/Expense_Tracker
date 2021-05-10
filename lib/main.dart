@@ -1,3 +1,6 @@
+import 'dart:ui';
+
+import 'widgets/chart.dart';
 import 'widgets/transaction_list.dart';
 import 'widgets/new_transaction.dart';
 import 'package:flutter/material.dart';
@@ -13,6 +16,22 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Expense Tracker',
       home: MyHomePage(),
+      theme: ThemeData(
+        primarySwatch: Colors.purple,
+        accentColor: Colors.amber,
+        fontFamily: 'QuickSand',
+        textTheme: ThemeData.light().textTheme.copyWith(
+            bodyText1:
+                TextStyle(color: Colors.red, fontWeight: FontWeight.w800)),
+        appBarTheme: AppBarTheme(
+          textTheme: ThemeData.light().textTheme.copyWith(
+                headline6: TextStyle(
+                    fontFamily: 'OpenSans',
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold),
+              ),
+        ),
+      ),
     );
   }
 }
@@ -53,6 +72,14 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
+  List<Transaction> get _recentTransactions {
+    return _userTransactions.where((tx) {
+      return tx.date.isAfter(
+        DateTime.now().subtract(Duration(days: 7)),
+      );
+    }).toList();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -68,14 +95,7 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Column(
           //mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            Card(
-              elevation: 5,
-              child: Container(
-                  width: double.infinity,
-                  height: 30,
-                  color: Colors.blue,
-                  child: Text("Bar Graph")),
-            ),
+            Chart(_recentTransactions),
             TransactionList(_userTransactions)
           ],
         ),

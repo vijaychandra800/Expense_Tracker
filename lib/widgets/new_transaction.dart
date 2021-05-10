@@ -48,7 +48,7 @@ class _NewTransactionState extends State<NewTransaction> {
               ElevatedButton(
                 child: Text(
                   "Add Transaction",
-                  style: TextStyle(color: Colors.red),
+                  style: TextStyle(),
                 ),
                 onPressed: submitData,
               )
