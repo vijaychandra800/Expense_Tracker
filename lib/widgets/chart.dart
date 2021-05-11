@@ -1,14 +1,20 @@
+import 'package:flutter/cupertino.dart';
+
+import '../widgets/bar_chart.dart';
 import 'package:flutter/material.dart';
 import '../models/transaction.dart';
 import 'package:intl/intl.dart';
-import '../widgets/transaction_list.dart';
 
 class Chart extends StatelessWidget {
-
   final List<Transaction> recentTransactions;
 
   Chart(this.recentTransactions);
 
+  double get totalSpending {
+    return groupedTransactionValues.fold(0.0, (sum, item) {
+      return sum + item['amount'];
+    });
+  }
 
   List<Map<String, Object>> get groupedTransactionValues {
     return List.generate(7, (index) {
@@ -22,17 +28,31 @@ class Chart extends StatelessWidget {
           totalSum += recentTransactions[i].amount;
         }
       }
-
-      return {'day': DateFormat.E().format(weekDay).substring(0,1), 'amount': totalSum};
-    }
-    ).toList();
+      return {
+        'day': DateFormat.E().format(weekDay).substring(0, 1),
+        'amount': totalSum
+      };
+    }).reversed.toList();
   }
 
   @override
   Widget build(BuildContext context) {
     return Card(
-      elevation: 6,
-      margin: EdgeInsets.all(20),
-    );
+        elevation: 6,
+        margin: EdgeInsets.all(20),
+        child: Flexible(
+          fit: FlexFit.tight,
+          child: Padding(
+            padding: const EdgeInsets.all(8),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: groupedTransactionValues.map(
+                    (data) {
+                  return BarChart(data['day'], data['amount'], (data['amount'] as double)/totalSpending);
+                },
+              ).toList(),
+            ),
+          ),
+        ));
   }
 }

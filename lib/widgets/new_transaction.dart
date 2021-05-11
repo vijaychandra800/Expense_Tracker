@@ -45,6 +45,7 @@ class _NewTransactionState extends State<NewTransaction> {
                 keyboardType: TextInputType.number,
                 onSubmitted: (_) => submitData(),
               ),
+
               ElevatedButton(
                 child: Text(
                   "Add Transaction",
