@@ -1,6 +1,9 @@
 # Expense_Tracker
 
-A basic Expense Tracker Application
+A basic Expense Tracker Android Application built on Flutter.
+
+## App Screenshot
+![App Screenshot](http://atozhacks.in/expense.png)
 
 ## Getting Started
 
